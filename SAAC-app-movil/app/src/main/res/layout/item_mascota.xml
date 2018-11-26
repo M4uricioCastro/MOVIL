@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    >
+
+    <TextView
+        android:id="@+id/item_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textColor="#fff"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        />
+    <TextView
+        android:id="@+id/item_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boby"
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/item_circle"
+        />
+    <TextView
+        android:id="@+id/item_raza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="labrador"
+        android:textStyle="italic"
+        android:layout_below="@id/item_nombre"
+        android:layout_toRightOf="@id/item_circle"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/item_circle"
+        android:background="#bdbdbd"
+        android:layout_marginBottom="4dp"
+        />
+</RelativeLayout>
