@@ -1,6 +1,7 @@
 package com.example.maury.saacloop;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -37,6 +38,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
         Curso c = cursoList.get(i);
         cursoHolder.txtcircle.setText(c.Nombre.charAt(0)+"");
         cursoHolder.txtnombre.setText(c.Nombre);
+        cursoHolder.txtIdcurso.setText(c.idCurso+"");
         cursoHolder.id = c.idCurso+"";
     }
 
@@ -46,16 +48,17 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
     }
 
     public class cursoHolder extends RecyclerView.ViewHolder{
-        private TextView txtcircle, txtnombre;
+        private TextView txtcircle, txtnombre, txtIdcurso;
         private String id;
         public cursoHolder(@NonNull View itemView) {
             super(itemView);
             txtcircle = itemView.findViewById(R.id.item_circleCurso);
             txtnombre = itemView.findViewById(R.id.item_nombreCurso);
+            txtIdcurso = itemView.findViewById(R.id.item_idCurso);
             txtnombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(activity,"id"+id,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity,"id"+id,Toast.LENGTH_SHORT).show();
                 }
             });
         }

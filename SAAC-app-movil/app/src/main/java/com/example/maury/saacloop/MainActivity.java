@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.maury.saacloop.saac.CrudCurso;
 import com.example.maury.saacloop.saac.Curso;
@@ -22,21 +23,23 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView txtnombre, txtidCurso;
     private RecyclerView recycler ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recycler = findViewById(R.id.recycler);
+        txtnombre = findViewById(R.id.item_nombre);
+        txtidCurso = findViewById(R.id.item_idCurso);
         //mascotas();
         CrudCurso crudCurso = new CrudCurso(this);
         Curso c = crudCurso.find(666);
         Log.e("info","-------------------------");
         Log.e("info",c.Nombre);
         Log.e("info","--------------------------");
-        List<Curso> List = crudCurso.cursoList();
     }
+
 
     @Override
     protected void onResume() {
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://192.168.0.6/SAAC-app-web/index.php/api/cursos";
+        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursos";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             JSONArray json = new JSONArray(respuesta);
             CrudCurso crudCurso = new CrudCurso(this);
             List<Curso> ListaCursosize = crudCurso.cursoList();
-            if (ListaCursosize.size() == json.length()){
+            if (ListaCursosize.size() <= json.length()){
                 for (int i=0; i<json.length();i++){
                /* Mascota m = new Mascota();
                 m.id = json.getJSONObject(i).getInt("id");
@@ -129,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
             }
             Adaptador ad = new Adaptador(this,R.layout.item_curso,ListaCursosize);
             recycler.setAdapter(ad);
+            txtnombre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final String idCurso = txtidCurso.getText().toString();
+                    Intent i = new Intent(MainActivity.this, alumnoActivity.class);
+                    MainActivity.this.startActivity(i);
+                    i.putExtra("idCurso",idCurso);
+                }
+            });
         }catch (Exception e){
             e.printStackTrace();
         }
