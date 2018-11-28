@@ -58,7 +58,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
             txtnombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(activity, alumnoActivity.class);
+                    Intent i = new Intent(activity, loginActivity.class);
                     i.putExtra("ID",id);
                     activity.startActivity(i);
                 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://192.168.0.9/SAAC-app-web/index.php/api/cursos";
+        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursos";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("info", statusCode+"<---------------------------");
+                CargaOffline();
             }
         });
     }// end function
@@ -92,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }// end function
-
+    public void CargaOffline(){
+        CrudCurso crudCurso = new CrudCurso(this);
+        List<Curso> lista = crudCurso.cursoList();
+        Adaptador ad = new Adaptador(this,R.layout.item_curso,lista);
+        recycler.setAdapter(ad);
+    }
     public void cargaRecycler(String respuesta){
         //cargar el item correspondiente
         LinearLayoutManager lm = new LinearLayoutManager(this);
@@ -107,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             CrudCurso crudCurso = new CrudCurso(this);
             List<Curso> ListaCursosize = crudCurso.cursoList();
             if (ListaCursosize.size() <= json.length()){
+                cursoList.clear();
                 for (int i=0; i<json.length();i++){
                     Curso c = new Curso();
                     //eliminar los repetidos
@@ -120,27 +127,19 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("info",c.idCurso+"");
                     Log.e("info",c.Nombre);
                     Log.e("info","--------------------------");
-                    cursoList.add(c);
+                    ListaCursosize.add(c);
 
                 }
             }
             Adaptador ad = new Adaptador(this,R.layout.item_curso,ListaCursosize);
             recycler.setAdapter(ad);
-            /* txtnombre.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final String idCurso = txtidCurso.getText().toString();
-                    Intent i = new Intent(MainActivity.this, alumnoActivity.class);
-                    MainActivity.this.startActivity(i);
-                    i.putExtra("idCurso",idCurso);
-                }
-            });*/
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     public void eventoInsertar(View view) {
+
         Intent i = new Intent(this,insertarActivity.class);
         startActivity(i);
     }

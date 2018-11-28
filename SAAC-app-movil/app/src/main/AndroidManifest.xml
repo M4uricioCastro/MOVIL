@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".insertarActivity" />
-        <activity android:name=".alumnoActivity"></activity>
+        <activity android:name=".alumnoActivity" />
+        <activity android:name=".loginActivity"></activity>
     </application>
 
 </manifest>

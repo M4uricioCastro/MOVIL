@@ -70,4 +70,20 @@ public class CrudCurso {
         db.close();
         return list;
     }
+    public boolean loginCurso(String usuario, String clave){
+        Curso c = new Curso();
+        db = helper.getReadableDatabase();
+        String sql = "select * from "+conexionHelper.TABLE+" where "+conexionHelper.ID_CURSO+" =? and "+conexionHelper.NOMBRE+" =?";
+        String pk = clave+"";
+        Cursor cursor = db.rawQuery(sql,new String[]{pk,usuario});
+        if (cursor.getColumnCount()==1){
+            db.close();
+            return true;
+        }else{
+            db.close();
+            return false;
+        }
+
+
+    }
 }
