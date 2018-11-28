@@ -58,7 +58,9 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
             txtnombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(activity,"id"+id,Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(activity, alumnoActivity.class);
+                    i.putExtra("ID",id);
+                    activity.startActivity(i);
                 }
             });
         }

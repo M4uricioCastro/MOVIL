@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursos";
+        String url = "http://192.168.0.9/SAAC-app-web/index.php/api/cursos";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }// end function
 
     public void cargaRecycler(String respuesta){
+        //cargar el item correspondiente
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(lm);
@@ -107,14 +108,6 @@ public class MainActivity extends AppCompatActivity {
             List<Curso> ListaCursosize = crudCurso.cursoList();
             if (ListaCursosize.size() <= json.length()){
                 for (int i=0; i<json.length();i++){
-               /* Mascota m = new Mascota();
-                m.id = json.getJSONObject(i).getInt("id");
-                m.nombre = json.getJSONObject(i).getString("nombre");
-                m.genero = json.getJSONObject(i).getString("genero");
-                m.raza = json.getJSONObject(i).getString("raza");
-                m.peso = json.getJSONObject(i).getDouble("peso");
-                Lista.add(m);*/
-
                     Curso c = new Curso();
                     //eliminar los repetidos
                     crudCurso.delete(c.idCurso);
@@ -128,11 +121,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("info",c.Nombre);
                     Log.e("info","--------------------------");
                     cursoList.add(c);
+
                 }
             }
             Adaptador ad = new Adaptador(this,R.layout.item_curso,ListaCursosize);
             recycler.setAdapter(ad);
-            txtnombre.setOnClickListener(new View.OnClickListener() {
+            /* txtnombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String idCurso = txtidCurso.getText().toString();
@@ -140,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.startActivity(i);
                     i.putExtra("idCurso",idCurso);
                 }
-            });
+            });*/
         }catch (Exception e){
             e.printStackTrace();
         }
