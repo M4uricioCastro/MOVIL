@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursos";
+        String url = "http://192.168.0.9/SAAC-app-web/index.php/api/cursos";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override

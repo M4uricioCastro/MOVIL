@@ -76,14 +76,12 @@ public class CrudCurso {
         String sql = "select * from "+conexionHelper.TABLE+" where "+conexionHelper.ID_CURSO+" =? and "+conexionHelper.NOMBRE+" =?";
         String pk = clave+"";
         Cursor cursor = db.rawQuery(sql,new String[]{pk,usuario});
-        if (cursor.getColumnCount()==1){
+        if (cursor.getCount()==1){
             db.close();
             return true;
         }else{
             db.close();
             return false;
         }
-
-
     }
 }
