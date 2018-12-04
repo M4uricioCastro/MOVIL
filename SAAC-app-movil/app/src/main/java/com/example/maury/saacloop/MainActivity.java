@@ -25,6 +25,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     private TextView txtnombre, txtidCurso;
     private RecyclerView recycler ;
+    private String ip="192.168.0.9";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursos";
+        String url = "http://"+ip+"/SAAC-app-web/index.php/api/cursos";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -112,14 +113,14 @@ public class MainActivity extends AppCompatActivity {
             JSONArray json = new JSONArray(respuesta);
             CrudCurso crudCurso = new CrudCurso(this);
             List<Curso> ListaCursosize = crudCurso.cursoList();
-            if (ListaCursosize.size() <= json.length()){
+            if (ListaCursosize.size() < json.length()){
                 cursoList.clear();
                 for (int i=0; i<json.length();i++){
                     Curso c = new Curso();
                     //eliminar los repetidos
-                    crudCurso.delete(c.idCurso);
                     //ingresar todos
                     c.idCurso = json.getJSONObject(i).getInt("idCurso");
+                    crudCurso.delete(c.idCurso);
                     c.Nombre = json.getJSONObject(i).getString("Nombre");
                     crudCurso.insert(c);
 

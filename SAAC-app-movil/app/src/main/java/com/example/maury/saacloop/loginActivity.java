@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,15 +25,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class loginActivity extends AppCompatActivity {
     int id;
-    private TextView txtusuario, txtClave;
+    private EditText txtUsuario1, txtclave1;
+    private String ip="192.168.0.9";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Intent intent = getIntent();
         id = Integer.parseInt(intent.getStringExtra("ID"));
-        txtusuario = findViewById(R.id.txtUsuario);
-        txtClave = findViewById(R.id.txtClave);
+        txtUsuario1 = findViewById(R.id.txtUsuario);
+        txtclave1 = findViewById(R.id.txtClave);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class loginActivity extends AppCompatActivity {
         alumnos();
     }
     public void alumnos(){
-        String url = "http://192.168.43.58/SAAC-app-web/index.php/api/cursoAlu";
+        String url = "http://"+ip+"/SAAC-app-web/index.php/api/cursoAlu";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("id", id);
@@ -90,9 +92,11 @@ public class loginActivity extends AppCompatActivity {
         }catch (Exception e){e.printStackTrace();}
     }
     public void eventoLogin(View v){
+        String usuario = txtUsuario1.getText().toString();
+        String clave= txtclave1.getText().toString();
         CrudCurso crudCurso = new CrudCurso(this);
-        if (txtusuario.getText().toString() != "" && txtClave.getText().toString()!=""){
-           boolean esta = crudCurso.loginCurso(txtusuario.getText().toString(),txtClave.getText().toString());
+        if (usuario != "" && clave!=""){
+           boolean esta = crudCurso.loginCurso(usuario,clave);
            if (esta){
                Intent i = new Intent(this, alumnoActivity.class);
                i.putExtra("ID",id+"");
