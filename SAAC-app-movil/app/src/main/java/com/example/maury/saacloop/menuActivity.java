@@ -1,9 +1,19 @@
 package com.example.maury.saacloop;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.maury.saacloop.saac.Categoria;
 import com.example.maury.saacloop.saac.CrudCategoria;
@@ -23,19 +33,105 @@ public class menuActivity extends AppCompatActivity {
     int id;
     String Rut;
     private String ip="192.168.0.9";
+    public CrudCategoria crudCategoria = new CrudCategoria(this);
+    private ListView menus_left;
+    private DrawerLayout drawer;
+    private String menuList[]={"Inicio","Categoria","Actividad"};
+    private ActionBarDrawerToggle toggle;
+    private FragmentManager fm;
+    private FragmentTransaction tx;
+    private FragmentoCat fcat;
+    private FragmentoTareas ftareas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Intent intent = getIntent();
+        menus_left= findViewById(R.id.left_drawer);
+        drawer = findViewById(R.id.drawer_layout);
+        fcat = new FragmentoCat();
+        ftareas = new FragmentoTareas();
         id = Integer.parseInt(intent.getStringExtra("ID"));
         Rut =  intent.getStringExtra("RUT");
         Log.e("Menu", id+" Rut: "+Rut);
+        menus_left.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,menuList));
+        configuracionActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        menus_left.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 cargaCategoria(position);
+            }
+        });
+    }
+    private void cargaCategoria(int position){
+      /*  fm = getSupportFragmentManager();
+        tx= fm.beginTransaction();
+        switch (position){
+            case 0:
+                tx.replace(R.id.content_frame,ftareas);
+                tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                break;
+            case 1:
+                tx.replace(R.id.content_frame, ftareas);
+                tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                break;
+        }
+        tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        tx.commit();
+        drawer.closeDrawers();*/
+    }
+    private void configuracionActionBar(){
+        toggle = new ActionBarDrawerToggle(this,drawer,R.string.drawer_open,R.string.drawer_close){
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle("SAAC Movil");
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Seleccione");
+            }
+        };
+        drawer.setDrawerListener(toggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        categoria();
+        pictograma();
     }
     public void categoria(){
         String url = "http://"+ip+"/SAAC-app-web/index.php/api/categorias";

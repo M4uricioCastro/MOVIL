@@ -53,7 +53,7 @@ public class conexionHelper extends SQLiteOpenHelper {
         db.execSQL(scriptCategoria);
         //pictograma
         String scriptPictograma="";
-        scriptPictograma+="create table "+TABLE_PICTOGRAMA+"("+ID_PICTOGRAMA+" integer primary key,"+NOMBRE_PICTOGRAMA+" text,"+DESCRIPCION_PICTOGRAMA+" text,"+EJEMPLO_PICTOGRAMA+" text,"+TAGS_PICTOGRAMA+" text,"+IMG_PICTOGRAMA+" text,"+ESTADO_PICTOGRAMA+" text,"+ID_CATEGORIA_PICTOGRAMA+" integer,"+RUT_DOCENTE_PICTOGRAMA+" integer,);";
+        scriptPictograma+="create table "+TABLE_PICTOGRAMA+"("+ID_PICTOGRAMA+" integer primary key,"+NOMBRE_PICTOGRAMA+" text,"+DESCRIPCION_PICTOGRAMA+" text,"+EJEMPLO_PICTOGRAMA+" text,"+TAGS_PICTOGRAMA+" text,"+IMG_PICTOGRAMA+" text,"+ESTADO_PICTOGRAMA+" text,"+ID_CATEGORIA_PICTOGRAMA+" integer,"+RUT_DOCENTE_PICTOGRAMA+" integer);";
         db.execSQL(scriptPictograma);
     }
 
