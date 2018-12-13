@@ -2,8 +2,9 @@ package com.example.maury.saacloop;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import  android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -40,8 +41,9 @@ public class menuActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     private FragmentManager fm;
     private FragmentTransaction tx;
-    private FragmentoCat fcat;
-    private FragmentoTareas ftareas;
+    private Fragment fcat;
+    private Fragment ftareas;
+    private Fragment finicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +52,11 @@ public class menuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         menus_left= findViewById(R.id.left_drawer);
         drawer = findViewById(R.id.drawer_layout);
-        fcat = new FragmentoCat();
-        ftareas = new FragmentoTareas();
         id = Integer.parseInt(intent.getStringExtra("ID"));
         Rut =  intent.getStringExtra("RUT");
         Log.e("Menu", id+" Rut: "+Rut);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new FragmentoInicio()).commit();
         menus_left.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,menuList));
         configuracionActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,21 +70,25 @@ public class menuActivity extends AppCompatActivity {
         });
     }
     private void cargaCategoria(int position){
-      /*  fm = getSupportFragmentManager();
+        fm = getFragmentManager();
         tx= fm.beginTransaction();
+        fcat = new FragmentoCat();
+        ftareas = new FragmentoTareas();
+        finicio = new FragmentoInicio();
         switch (position){
             case 0:
-                tx.replace(R.id.content_frame,ftareas);
-                tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                tx.replace(R.id.content_frame,finicio);
                 break;
             case 1:
+                tx.replace(R.id.content_frame, fcat);
+                break;
+            case 2:
                 tx.replace(R.id.content_frame, ftareas);
-                tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 break;
         }
         tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         tx.commit();
-        drawer.closeDrawers();*/
+        drawer.closeDrawers();
     }
     private void configuracionActionBar(){
         toggle = new ActionBarDrawerToggle(this,drawer,R.string.drawer_open,R.string.drawer_close){

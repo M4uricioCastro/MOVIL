@@ -18,10 +18,4 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="#fff"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Bienvenido"
-        android:gravity="center"
-        android:textSize="40dp"/>
 </android.support.v4.widget.DrawerLayout>
