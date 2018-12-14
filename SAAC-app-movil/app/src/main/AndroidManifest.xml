@@ -21,7 +21,8 @@
         <activity android:name=".insertarActivity" />
         <activity android:name=".alumnoActivity" />
         <activity android:name=".loginActivity" />
-        <activity android:name=".menuActivity"></activity>
+        <activity android:name=".menuActivity" />
+        <activity android:name=".ImagenesActivity"></activity>
     </application>
 
 </manifest>

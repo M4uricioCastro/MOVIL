@@ -33,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
 public class menuActivity extends AppCompatActivity {
     int id;
     String Rut;
-    private String ip="192.168.43.58";
+    private String ip="192.168.0.4";
     public static CrudCategoria crudCategoria;
     private ListView menus_left;
     private DrawerLayout drawer;
@@ -88,6 +88,7 @@ public class menuActivity extends AppCompatActivity {
                 break;
         }
         tx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        tx.addToBackStack(null);
         tx.commit();
         drawer.closeDrawers();
     }

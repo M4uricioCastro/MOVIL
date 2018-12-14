@@ -25,7 +25,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     private TextView txtnombre, txtidCurso;
     private RecyclerView recycler ;
-    private String ip="192.168.43.58";
+    private String ip="192.168.0.4";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
