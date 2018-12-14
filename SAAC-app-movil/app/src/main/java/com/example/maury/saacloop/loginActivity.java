@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class loginActivity extends AppCompatActivity {
     int id;
     private EditText txtUsuario1, txtclave1;
-    private String ip="192.168.0.9";
+    private String ip="192.168.43.58";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -7,14 +7,10 @@
     tools:context=".FragmentoCat">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/List_Cat"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:textColor="#fff"
-        android:textSize="32dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        />
-
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="true"
+        ></ListView>
 </RelativeLayout>

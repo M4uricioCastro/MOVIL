@@ -33,8 +33,8 @@ import cz.msebera.android.httpclient.Header;
 public class menuActivity extends AppCompatActivity {
     int id;
     String Rut;
-    private String ip="192.168.0.9";
-    public CrudCategoria crudCategoria = new CrudCategoria(this);
+    private String ip="192.168.43.58";
+    public static CrudCategoria crudCategoria;
     private ListView menus_left;
     private DrawerLayout drawer;
     private String menuList[]={"Inicio","Categoria","Actividad"};
@@ -55,6 +55,7 @@ public class menuActivity extends AppCompatActivity {
         id = Integer.parseInt(intent.getStringExtra("ID"));
         Rut =  intent.getStringExtra("RUT");
         Log.e("Menu", id+" Rut: "+Rut);
+        crudCategoria = new CrudCategoria(this);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,new FragmentoInicio()).commit();
         menus_left.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,menuList));
@@ -154,7 +155,7 @@ public class menuActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e("info", statusCode+"<---------------------------");
+                Log.e("Categoria", statusCode+"<---------------------------");
             }
         });
     }
@@ -193,7 +194,7 @@ public class menuActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e("info", statusCode+"<---------------------------");
+                Log.e("pictograma", statusCode+"<---------------------------");
             }
         });
     }
