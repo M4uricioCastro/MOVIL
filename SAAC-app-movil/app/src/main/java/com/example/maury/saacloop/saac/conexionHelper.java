@@ -32,6 +32,25 @@ public class conexionHelper extends SQLiteOpenHelper {
     public static final String ESTADO_PICTOGRAMA="Estado";
     public static final String ID_CATEGORIA_PICTOGRAMA="idCategoria";
     public static final String RUT_DOCENTE_PICTOGRAMA="RutDocente";
+    //tabla Actividad
+    public static final String TABLE_ACTIVIDAD="actividad";
+    public static final String ID_ACTIVIDAD="idActividad";
+    public static final String ORACION="Oracion";
+    public static final String PICS_VISTA="PicsVista";
+    public static final String ID_PIC_1="idPic1";
+    public static final String ID_PIC_2="idPic2";
+    public static final String ID_PIC_3="idPic3";
+    public static final String ID_PIC_4="idPic4";
+    public static final String POS_RESPUESTA="PosRespuesta";
+    public static final String ESTADO="Estado";
+    public static final String ID_CURSO_ACTIVIDAD="idCurso";
+    //TABLA RESPUESTA
+    public static final String TABLE_RESPUESTA="respuesta";
+    public static final String ID_ACTIVIDAD_ALUMNO="idActividadAlumno";
+    public static final String TIEMPO="Tiempo";
+    public static final String ESTADO_RESPUESTA="Estado";
+    public static final String RUT_ALUMNO_RESPUESTA="RutAlumno";
+    public static final String ID_ACTIVIDAD_RESPUESTA="idActividad";
 
     public conexionHelper (Context context){
         super(context,DATABASE_NAME, null,VERSION);
@@ -55,11 +74,21 @@ public class conexionHelper extends SQLiteOpenHelper {
         String scriptPictograma="";
         scriptPictograma+="create table "+TABLE_PICTOGRAMA+"("+ID_PICTOGRAMA+" integer primary key,"+NOMBRE_PICTOGRAMA+" text,"+DESCRIPCION_PICTOGRAMA+" text,"+EJEMPLO_PICTOGRAMA+" text,"+TAGS_PICTOGRAMA+" text,"+IMG_PICTOGRAMA+" text,"+ESTADO_PICTOGRAMA+" text,"+ID_CATEGORIA_PICTOGRAMA+" integer,"+RUT_DOCENTE_PICTOGRAMA+" integer);";
         db.execSQL(scriptPictograma);
+        //actividad
+        String scriptActividad="";
+        scriptActividad+="create table "+TABLE_ACTIVIDAD+"("+ID_ACTIVIDAD+" integer primary key, "+ORACION+" text, "+PICS_VISTA+" BLOB, "
+                +ID_PIC_1+" integer, "+ID_PIC_2+" integer , "+ID_PIC_3+" integer, "+ID_PIC_4+" integer, "+POS_RESPUESTA+" int, "+ESTADO
+                +" text, "+ID_CURSO_ACTIVIDAD+" integer)";
+        db.execSQL(scriptActividad);
+        //respuesta
+        String scriptRespuesta="";
+        scriptRespuesta+="create table "+TABLE_RESPUESTA+"("+ID_ACTIVIDAD_ALUMNO+" integer primary key, "+TIEMPO+" integer, "+
+                ESTADO_RESPUESTA+" text, "+RUT_ALUMNO_RESPUESTA+" integer, "+ID_ACTIVIDAD_RESPUESTA+" integer)";
+        db.execSQL(scriptRespuesta);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         onCreate(db);
     }
 }
