@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class loginActivity extends AppCompatActivity {
     int id;
     private EditText txtUsuario1, txtclave1;
-    private String ip="192.168.0.4";
+    private String ip="170.239.85.176";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,7 @@ public class loginActivity extends AppCompatActivity {
         alumnos();
     }
     public void alumnos(){
-        String url = "http://"+ip+"/SAAC-app-web/index.php/api/cursoAlu";
+        String url = "http://"+ip+"/index.php/api/cursoAlu";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("id", id);

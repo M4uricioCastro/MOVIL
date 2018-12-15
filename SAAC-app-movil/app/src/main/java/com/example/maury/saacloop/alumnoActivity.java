@@ -28,7 +28,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class alumnoActivity extends AppCompatActivity {
     int id;
-    private String ip="192.168.0.4";
+    private String ip="170.239.85.176";
     private TextView txtnombre, txtidCurso,txtrut;
     private RecyclerView recycler;
     @Override

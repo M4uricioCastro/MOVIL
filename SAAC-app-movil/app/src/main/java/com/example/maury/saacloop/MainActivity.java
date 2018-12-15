@@ -1,5 +1,6 @@
 package com.example.maury.saacloop;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     private TextView txtnombre, txtidCurso;
     private RecyclerView recycler ;
-    private String ip="192.168.0.4";
+    private String ip="170.239.85.176";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +55,16 @@ public class MainActivity extends AppCompatActivity {
         insertMascota: inserta una mascota en la BD
         * */
     public void mascotas(){
-        String url = "http://"+ip+"/SAAC-app-web/index.php/api/cursos";
+        String url = "http://"+ip+"/index.php/api/cursos";
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Cargando...");
+        progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200){
+                    progressDialog.dismiss();
                     String respuesta = new String(responseBody);
                     cargaRecycler(respuesta);
                     Log.e("BDOnline", respuesta);
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressDialog.dismiss();
                 Log.e("info", statusCode+"<---------------------------");
                 CargaOffline();
             }

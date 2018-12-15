@@ -33,7 +33,7 @@ public class FragmentoCat extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        i = new Intent(getActivity().getApplicationContext(),ImagenesActivity.class);
+
         System.out.println(crudCategoria.categoriaList().size());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragmento_cat, container, false);
@@ -48,9 +48,11 @@ public class FragmentoCat extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //mandar a otra activity donde se veran las imagenes de las categorias
-            i.putExtra("PosCat",position);
-            startActivity(i);
+            //mandar a otra activity donde se veran las imagenes de las categoria
+
+               i = new Intent(getActivity(),ImagenesActivity.class);
+               i.putExtra("cod",position+"");
+               startActivity(i);
             }
         });
     }

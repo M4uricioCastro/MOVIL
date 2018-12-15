@@ -96,4 +96,26 @@ public class CrudPictograma {
         db.close();
         return list;
     }
+    public List<Pictograma> pictoCat(int id){
+        List<Pictograma> list = new ArrayList<>();
+        db= helper.getReadableDatabase();
+        String sql= "select * from "+conexionHelper.TABLE_PICTOGRAMA+" where "+conexionHelper.ID_CATEGORIA_PICTOGRAMA+" =?";
+        String pk = id+"";
+        Cursor cursor = db.rawQuery(sql,new String[]{pk});
+        while (cursor.moveToNext()){
+            Pictograma p = new Pictograma();
+            p.idPictograma = cursor.getInt(0);
+            p.nombre = cursor.getString(1);
+            p.descripcion = cursor.getString(2);
+            p.ejemplo = cursor.getString(3);
+            p.tags = cursor.getString(4);
+            p.img = cursor.getString(5);
+            p.estado = cursor.getString(6);
+            p.idCategoria = cursor.getInt(7);
+            p.RutDocente = cursor.getInt(8);
+            list.add(p);
+        }
+        db.close();
+        return list;
+    }
 }

@@ -33,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
 public class menuActivity extends AppCompatActivity {
     int id;
     String Rut;
-    private String ip="192.168.0.4";
+    private String ip="170.239.85.176";
     public static CrudCategoria crudCategoria;
     private ListView menus_left;
     private DrawerLayout drawer;
@@ -70,6 +70,7 @@ public class menuActivity extends AppCompatActivity {
             }
         });
     }
+
     private void cargaCategoria(int position){
         fm = getFragmentManager();
         tx= fm.beginTransaction();
@@ -142,7 +143,7 @@ public class menuActivity extends AppCompatActivity {
         pictograma();
     }
     public void categoria(){
-        String url = "http://"+ip+"/SAAC-app-web/index.php/api/categorias";
+        String url = "http://"+ip+"/index.php/api/categorias";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -181,8 +182,9 @@ public class menuActivity extends AppCompatActivity {
             }else{Log.e("MSN","No hay Datos nuevos");}
         }catch (Exception e){e.printStackTrace();}
     }
+
     public void pictograma(){
-        String url = "http://"+ip+"/SAAC-app-web/index.php/api/pictogramas";
+        String url = "http://"+ip+"/index.php/api/pictogramas";
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
