@@ -23,7 +23,8 @@
         <activity android:name=".loginActivity" />
         <activity android:name=".menuActivity" />
         <activity android:name=".ImagenesActivity" />
-        <activity android:name=".TareasActivity"></activity>
+        <activity android:name=".TareasActivity" android:screenOrientation="sensorLandscape">
+        </activity>
     </application>
 
 </manifest>

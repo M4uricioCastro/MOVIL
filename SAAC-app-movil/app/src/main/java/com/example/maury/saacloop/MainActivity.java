@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
             Adaptador ad = new Adaptador(this,R.layout.item_curso,ListaCursosize);
             recycler.setAdapter(ad);
+
         }catch (Exception e){
             e.printStackTrace();
         }

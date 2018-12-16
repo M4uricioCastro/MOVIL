@@ -1,24 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TareasActivity">
+    tools:context=".TareasActivity"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <TextView
-        android:id="@+id/tvrespuestaTareas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="no"
-        android:textSize="30dp"
-        android:textColor="#e11319"
-        android:visibility="invisible"/>
-    <ListView
+        android:id="@+id/item_oracion_actividad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_Tareas"
-        >
-    </ListView>
+        android:gravity="center"
+        android:text="Oracion"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:scrollbars="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/pregunta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:text="Pregunta" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerPregunta"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/pregunta"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:scrollbars="horizontal">
+        <TextView
+            android:id="@+id/alternativa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:text="Alternativas" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerAlternativa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/alternativa"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout >
+
+</LinearLayout>

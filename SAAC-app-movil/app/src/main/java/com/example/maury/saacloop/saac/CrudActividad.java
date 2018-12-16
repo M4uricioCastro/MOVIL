@@ -86,6 +86,29 @@ public class CrudActividad {
         db.close();
         return list;
     }
+    public List<Actividad> actividadListID(int id){
+        String pk = id+"";
+        List<Actividad> list = new ArrayList<>();
+        db= helper.getReadableDatabase();
+        String sql= "select * from "+conexionHelper.TABLE_ACTIVIDAD+" where "+conexionHelper.ID_ACTIVIDAD+" =?";
+        Cursor cursor = db.rawQuery(sql,new String[]{pk});
+        while (cursor.moveToNext()){
+            Actividad a = new Actividad();
+            a.idActividad = cursor.getInt(0);
+            a.Oracion = cursor.getString(1);
+            a.PicsVista = cursor.getString(2);
+            a.idPic1 = cursor.getInt(3);
+            a.idPic2 = cursor.getInt(4);
+            a.idPic3 = cursor.getInt(5);
+            a.idPic4 = cursor.getInt(6);
+            a.PosRespuesta = cursor.getInt(7);
+            a.Estado = cursor.getString(8);
+            a.idCurso = cursor.getInt(9);
+            list.add(a);
+        }
+        db.close();
+        return list;
+    }
     public List<String> idActividad(int id){
         String pk = id+"";
         List<String> list = new ArrayList<>();
