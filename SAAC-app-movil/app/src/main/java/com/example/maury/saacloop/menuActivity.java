@@ -1,6 +1,8 @@
 package com.example.maury.saacloop;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import  android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,12 +18,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.maury.saacloop.saac.Actividad;
 import com.example.maury.saacloop.saac.Categoria;
+import com.example.maury.saacloop.saac.CrudActividad;
 import com.example.maury.saacloop.saac.CrudCategoria;
 import com.example.maury.saacloop.saac.CrudPictograma;
+import com.example.maury.saacloop.saac.CrudRespuesta;
 import com.example.maury.saacloop.saac.Pictograma;
+import com.example.maury.saacloop.saac.Respuesta;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 
@@ -35,6 +42,7 @@ public class menuActivity extends AppCompatActivity {
     String Rut;
     private String ip="170.239.85.176";
     public static CrudCategoria crudCategoria;
+    public static CrudActividad crudActividad;
     private ListView menus_left;
     private DrawerLayout drawer;
     private String menuList[]={"Inicio","Categoria","Actividad"};
@@ -54,7 +62,9 @@ public class menuActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         id = Integer.parseInt(intent.getStringExtra("ID"));
         Rut =  intent.getStringExtra("RUT");
+
         Log.e("Menu", id+" Rut: "+Rut);
+
         crudCategoria = new CrudCategoria(this);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,new FragmentoInicio()).commit();
@@ -62,13 +72,20 @@ public class menuActivity extends AppCompatActivity {
         configuracionActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
+        guardarPreferencia();
         menus_left.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  cargaCategoria(position);
             }
         });
+    }
+    private void guardarPreferencia(){
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("rutAlumno", Rut);
+        editor.commit();
     }
 
     private void cargaCategoria(int position){
@@ -141,6 +158,57 @@ public class menuActivity extends AppCompatActivity {
         super.onResume();
         categoria();
         pictograma();
+        actividad();
+        respuesta();
+       cambioEstadoAct();
+    }
+    public void respuesta(){
+        String url = "http://"+ip+"/index.php/api/respuestas";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        int rut = Integer.parseInt(prefs.getString("rutAlumno","-1"));
+        params.put("RutAlumno", rut);
+        client.get(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (statusCode==200){
+                    String respuesta = new String(responseBody);
+                    cargaRespuestas(respuesta);
+                    Log.e("BDOrespuestas",respuesta);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("Conexion",statusCode+"");
+            }
+        });
+    }
+    public void actividad(){
+        String url = "http://"+ip+"/index.php/api/actividades";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        int idShar = prefs.getInt("idCurso",-1);
+        params.put("idCurso", idShar);
+        client.get(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (statusCode ==200){
+                    String respuesta = new String(responseBody);
+                    cargaActividades(respuesta);
+                    Log.e("BDOactividad",respuesta);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("conexion actividad",statusCode+"");
+            }
+        });
     }
     public void categoria(){
         String url = "http://"+ip+"/index.php/api/categorias";
@@ -161,6 +229,65 @@ public class menuActivity extends AppCompatActivity {
             }
         });
     }
+    public void cargaRespuestas(String respuesta){
+        try{
+            CrudRespuesta crudRespuesta = new CrudRespuesta(this);
+            JSONArray json = new JSONArray(respuesta);
+            SharedPreferences prefs =
+                    getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+            int idShar = prefs.getInt("idCurso",-1);
+            List<Respuesta> respuestaList = crudRespuesta.respuestaList(idShar);
+            if (respuestaList.size()<json.length()){
+                for (int i=0; i<json.length();i++){
+                    Respuesta r = new Respuesta();
+                    r.idActividadAlumno = json.getJSONObject(i).getInt("idActividadAlumno");
+                    r.Tiempo = json.getJSONObject(i).getInt("Tiempo");
+                    r.Estado = json.getJSONObject(i).getString("Estado");
+                    r.RutAlumno = json.getJSONObject(i).getInt("RutAlumno");
+                    r.idActividad = json.getJSONObject(i).getInt("idActividad");
+                    crudRespuesta.delete(r.idActividadAlumno);
+                    crudRespuesta.insert(r);
+                    Log.e("info","-------------------------");
+                    Log.e("info",r.idActividadAlumno+"");
+                    Log.e("info","--------------------------");
+                    respuestaList.add(r);
+                }
+            }else {Log.e("Respuesta","no hay datos nuevos");}
+        }catch (Exception e){e.printStackTrace();}
+    }
+    public void cargaActividades(String respuesta){
+        try {
+            CrudActividad crudActividad = new CrudActividad(this);
+            JSONArray json = new JSONArray(respuesta);
+            SharedPreferences prefs =
+                    getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+            int idShar = prefs.getInt("idCurso",-1);
+            List<Actividad> actividadList = crudActividad.actividadList(idShar);
+            if (actividadList.size()< json.length()){
+                for (int i=0; i<json.length();i++){
+                    Actividad a = new Actividad();
+                    a.idActividad = json.getJSONObject(i).getInt("idActividad");
+                    a.Oracion = json.getJSONObject(i).getString("Oracion");
+                    a.PicsVista = json.getJSONObject(i).getString("PicsVista");
+                    a.idPic1 = json.getJSONObject(i).getInt("idPic1");
+                    a.idPic2 = json.getJSONObject(i).getInt("idPic2");
+                    a.idPic3 = json.getJSONObject(i).getInt("idPic3");
+                    a.idPic4 = json.getJSONObject(i).getInt("idPic4");
+                    a.PosRespuesta = json.getJSONObject(i).getInt("PosRespuesta");
+                    a.Estado = json.getJSONObject(i).getString("Estado");
+                    a.idCurso = json.getJSONObject(i).getInt("idCurso");
+                    crudActividad.delete(a.idActividad);
+                    crudActividad.insert(a);
+                    Log.e("info","-------------------------");
+                    Log.e("info",a.idActividad+"");
+                    Log.e("info","--------------------------");
+                    actividadList.add(a);
+                }
+            }else {Log.e("Actividad","no hay datos nuevos");}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public void cargaCategoria(String respuesta){
         try{
             CrudCategoria crudCategoria = new CrudCategoria(this);
@@ -173,13 +300,9 @@ public class menuActivity extends AppCompatActivity {
                     crudCategoria.delete(c.idCategoria);
                     c.nombre = json.getJSONObject(i).getString("Nombre");
                     crudCategoria.insert(c);
-                    Log.e("info","-------------------------");
-                    Log.e("info",c.idCategoria+"");
-                    Log.e("info",c.nombre);
-                    Log.e("info","--------------------------");
                     categoriaList.add(c);
                 }
-            }else{Log.e("MSN","No hay Datos nuevos");}
+            }else{Log.e("categoria","No hay Datos nuevos");}
         }catch (Exception e){e.printStackTrace();}
     }
 
@@ -228,5 +351,34 @@ public class menuActivity extends AppCompatActivity {
             }
         }else{Log.e("MSN","No hay Datos nuevos");}
     }catch (Exception e){e.printStackTrace();}
+    }
+   public void cambioEstadoAct(){
+        CrudActividad crudActividad = new CrudActividad(this);
+        CrudRespuesta crudRespuesta = new CrudRespuesta(this);
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        int idShar = prefs.getInt("idCurso",-1);
+        int rut = Integer.parseInt(prefs.getString("rutAlumno","-1"));
+        List<Actividad> actividadList = crudActividad.actividadList(idShar);
+        List<Respuesta> respuestaList = crudRespuesta.respuestaList(rut);
+        if (actividadList.isEmpty()&&respuestaList.isEmpty()){
+            Log.e("Estado","Datos vacios");
+        }else {
+            for (int i=0;i<actividadList.size();i++){
+                Actividad a = new Actividad();
+                a.idActividad = actividadList.get(i).idActividad;
+                for (int j=0;j<respuestaList.size();j++){
+                    Respuesta r = new Respuesta();
+                    r.idActividad = respuestaList.get(j).idActividad;
+                    if (a.idActividad==r.idActividad){
+                        crudActividad.updateEstado("Intento "+j+1,a.idActividad);
+                        Log.e("Estado","intento"+0+(j+1));
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

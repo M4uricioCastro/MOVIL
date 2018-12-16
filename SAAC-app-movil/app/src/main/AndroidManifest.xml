@@ -22,7 +22,8 @@
         <activity android:name=".alumnoActivity" />
         <activity android:name=".loginActivity" />
         <activity android:name=".menuActivity" />
-        <activity android:name=".ImagenesActivity"></activity>
+        <activity android:name=".ImagenesActivity" />
+        <activity android:name=".TareasActivity"></activity>
     </application>
 
 </manifest>

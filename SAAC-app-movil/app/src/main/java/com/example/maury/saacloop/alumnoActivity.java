@@ -1,6 +1,8 @@
 package com.example.maury.saacloop;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class alumnoActivity extends AppCompatActivity {
     int id;
+    private int idShar;
     private String ip="170.239.85.176";
     private TextView txtnombre, txtidCurso,txtrut;
     private RecyclerView recycler;
@@ -41,6 +44,9 @@ public class alumnoActivity extends AppCompatActivity {
         txtrut = findViewById(R.id.item_rutAlumno);
         Intent intent = getIntent();
         id = Integer.parseInt(intent.getStringExtra("ID"));
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        idShar = prefs.getInt("idCurso",-1);
         Log.e("AlumnoActivity",id+"");
         cargaItem();
     }
@@ -61,7 +67,7 @@ public class alumnoActivity extends AppCompatActivity {
             List<Alumno> ListaAlumno = crudAlumno.AlumnoList();
             AdaptadorAlumno ad = new AdaptadorAlumno(this,R.layout.item_alumno,ListaAlumno);
             recycler.setAdapter(ad);
-            Log.e("Dentro","llego aqui!!");
+            Log.e("Dentro carga item","llego aqui!!");
         }catch (Exception e){
             e.printStackTrace();
         }

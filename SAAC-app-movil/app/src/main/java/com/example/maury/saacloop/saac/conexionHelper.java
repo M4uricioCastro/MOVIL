@@ -76,7 +76,7 @@ public class conexionHelper extends SQLiteOpenHelper {
         db.execSQL(scriptPictograma);
         //actividad
         String scriptActividad="";
-        scriptActividad+="create table "+TABLE_ACTIVIDAD+"("+ID_ACTIVIDAD+" integer primary key, "+ORACION+" text, "+PICS_VISTA+" BLOB, "
+        scriptActividad+="create table "+TABLE_ACTIVIDAD+"("+ID_ACTIVIDAD+" integer primary key, "+ORACION+" text, "+PICS_VISTA+" text, "
                 +ID_PIC_1+" integer, "+ID_PIC_2+" integer , "+ID_PIC_3+" integer, "+ID_PIC_4+" integer, "+POS_RESPUESTA+" int, "+ESTADO
                 +" text, "+ID_CURSO_ACTIVIDAD+" integer)";
         db.execSQL(scriptActividad);

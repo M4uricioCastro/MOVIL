@@ -30,22 +30,32 @@ public class CrudRespuesta {
         db.close();
         try{}catch (Exception e){e.printStackTrace();}
     }
+    public void delete(int id){
+        String pk=id+"";
+        db = helper.getWritableDatabase();
+        db.delete(conexionHelper.TABLE_RESPUESTA,conexionHelper.ID_ACTIVIDAD_ALUMNO+"=?", new String[]{pk});
+        db.close();
+    }
     //Se muestran todas las actividades del curso que se entro, pero el estado de estas actividades se rescata de respues
     //para saber si estan echas o no.
     //sera una consulta a todas las actividades por medio del curso(Viene del server).
     // y el estado de esta sera por medio si se ha completado o no
-    /*public List<Curso> cursoList(){
-        List<Curso> list = new ArrayList<>();
+    public List<Respuesta> respuestaList(int id){
+        String pk = id+"";
+        List<Respuesta> list = new ArrayList<>();
         db= helper.getReadableDatabase();
-        String sql= "select * from "+conexionHelper.TABLE;
-        Cursor cursor = db.rawQuery(sql,null);
+        String sql= "select * from "+conexionHelper.TABLE_RESPUESTA+" where "+conexionHelper.RUT_ALUMNO_RESPUESTA+" =?";
+        Cursor cursor = db.rawQuery(sql,new String[]{pk});
         while (cursor.moveToNext()){
-            Curso c = new Curso();
-            c.idCurso = cursor.getInt(0);
-            c.Nombre = cursor.getString(1);
-            list.add(c);
+            Respuesta r = new Respuesta();
+            r.idActividadAlumno = cursor.getInt(0);
+            r.Tiempo = cursor.getInt(1);
+            r.Estado = cursor.getString(2);
+            r.RutAlumno = cursor.getInt(3);
+            r.idActividad = cursor.getInt(4);
+            list.add(r);
         }
         db.close();
         return list;
-    }*/
+    }
 }

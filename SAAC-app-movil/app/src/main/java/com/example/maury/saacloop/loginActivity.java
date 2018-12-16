@@ -1,6 +1,8 @@
 package com.example.maury.saacloop;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Intent intent = getIntent();
         id = Integer.parseInt(intent.getStringExtra("ID"));
+        guardarPreferencia();
         txtUsuario1 = findViewById(R.id.txtUsuario);
         txtclave1 = findViewById(R.id.txtClave);
     }
@@ -41,6 +44,13 @@ public class loginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         alumnos();
+    }
+    private void guardarPreferencia(){
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("idCurso", id);
+        editor.commit();
     }
     public void alumnos(){
         String url = "http://"+ip+"/index.php/api/cursoAlu";

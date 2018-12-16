@@ -3,7 +3,7 @@ package com.example.maury.saacloop.saac;
 public class Actividad {
     public int idActividad;
     public String Oracion;
-    public int PicsVista;
+    public String PicsVista;
     public int idPic1;
     public int idPic2;
     public int idPic3;
@@ -16,7 +16,7 @@ public class Actividad {
 
     }
 
-    public Actividad(int idActividad, String oracion, int picsVista, int idPic1, int idPic2, int idPic3, int idPic4, int posRespuesta, String estado, int idCurso) {
+    public Actividad(int idActividad, String oracion, String picsVista, int idPic1, int idPic2, int idPic3, int idPic4, int posRespuesta, String estado, int idCurso) {
         this.idActividad = idActividad;
         Oracion = oracion;
         PicsVista = picsVista;

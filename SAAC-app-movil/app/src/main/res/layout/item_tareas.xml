@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+<TextView
+    android:id="@+id/item_oracion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="oracion"
+    android:textStyle="bold"
+    android:textSize="30dp"
+    android:paddingLeft="10dp"
+    />
+    <TextView
+        android:id="@+id/item_estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="estado"
+        android:textSize="20dp"
+        android:paddingLeft="25dp"
+        android:textColor="@color/design_default_color_primary"
+        android:layout_below="@id/item_oracion"
+        />
+    <TextView
+        android:id="@+id/item_idActividad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="estado"
+        android:visibility="invisible"
+
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/item_estado"
+        android:background="#bdbdbd"
+        android:layout_marginBottom="4dp"
+        />
+</RelativeLayout>
