@@ -17,18 +17,22 @@ public class CrudRespuesta {
         helper = new conexionHelper(context);
         values =  new ContentValues();
     }
-    public void insert(Respuesta r){
-        db = helper.getWritableDatabase();
-        values.clear();
-        values.put(conexionHelper.ID_ACTIVIDAD_ALUMNO, r.idActividadAlumno);
-        values.put(conexionHelper.TIEMPO, r.Tiempo);
-        values.put(conexionHelper.ESTADO_RESPUESTA, r.Estado);
-        values.put(conexionHelper.RUT_ALUMNO_RESPUESTA, r.RutAlumno);
-        values.put(conexionHelper.ID_ACTIVIDAD_RESPUESTA, r.idActividad);
+    public boolean insert(Respuesta r){
+        try{
+            db = helper.getWritableDatabase();
+            values.clear();
+            values.put(conexionHelper.ID_ACTIVIDAD_ALUMNO, r.idActividadAlumno);
+            values.put(conexionHelper.TIEMPO, r.Tiempo);
+            values.put(conexionHelper.ESTADO_RESPUESTA, r.Estado);
+            values.put(conexionHelper.RUT_ALUMNO_RESPUESTA, r.RutAlumno);
+            values.put(conexionHelper.ID_ACTIVIDAD_RESPUESTA, r.idActividad);
 
-        db.insert(conexionHelper.TABLE_RESPUESTA,null, values);
-        db.close();
-        try{}catch (Exception e){e.printStackTrace();}
+            db.insert(conexionHelper.TABLE_RESPUESTA,null, values);
+            db.close();
+            return true;
+        }catch (Exception e){e.printStackTrace();
+        return false;
+        }
     }
     public void delete(int id){
         String pk=id+"";
@@ -57,5 +61,16 @@ public class CrudRespuesta {
         }
         db.close();
         return list;
+    }
+    public int ultimoID(int rut){
+        String pk = rut+"";
+        db= helper.getReadableDatabase();
+        String sql= "select "+conexionHelper.ID_ACTIVIDAD_ALUMNO+" from "+conexionHelper.TABLE_RESPUESTA+" where "+conexionHelper.RUT_ALUMNO_RESPUESTA+" =?";
+        Cursor cursor = db.rawQuery(sql,new String[]{pk});
+        if (cursor.getCount()>0){
+            return cursor.getCount();
+        }else {
+            return 0;
+        }
     }
 }

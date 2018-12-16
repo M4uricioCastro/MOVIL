@@ -130,5 +130,14 @@ public class CrudActividad {
         db.update(conexionHelper.TABLE_ACTIVIDAD,values,conexionHelper.ID_ACTIVIDAD+"=?", new String[]{pk});
         db.close();
     }
+    public void updatePoss(int e,int id){
+        db = helper.getWritableDatabase();
+        values.clear();
+        //values.put(conexionHelper.ID_CURSO, c.idCurso);
+        values.put(conexionHelper.POS_RESPUESTA, e);
+        String pk = id+"";//String.valueOf(c.idCurso);
+        db.update(conexionHelper.TABLE_ACTIVIDAD,values,conexionHelper.ID_ACTIVIDAD+"=?", new String[]{pk});
+        db.close();
+    }
 
 }

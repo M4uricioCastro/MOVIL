@@ -43,11 +43,12 @@ public class alumnoActivity extends AppCompatActivity {
         txtidCurso = findViewById(R.id.item_idCurso);
         txtrut = findViewById(R.id.item_rutAlumno);
         Intent intent = getIntent();
-        id = Integer.parseInt(intent.getStringExtra("ID"));
+
         SharedPreferences prefs =
                 getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
         idShar = prefs.getInt("idCurso",-1);
-        Log.e("AlumnoActivity",id+"");
+        id = prefs.getInt("idCurso",-1);
+                Log.e("AlumnoActivity",id+"");
         cargaItem();
     }
 

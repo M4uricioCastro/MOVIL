@@ -38,6 +38,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class menuActivity extends AppCompatActivity {
+    int cont=0;
     int id;
     String Rut;
     private String ip="170.239.85.176";
@@ -60,11 +61,8 @@ public class menuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         menus_left= findViewById(R.id.left_drawer);
         drawer = findViewById(R.id.drawer_layout);
-        id = Integer.parseInt(intent.getStringExtra("ID"));
-        Rut =  intent.getStringExtra("RUT");
-
+        guardarPreferencia();
         Log.e("Menu", id+" Rut: "+Rut);
-
         crudCategoria = new CrudCategoria(this);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,new FragmentoInicio()).commit();
@@ -72,7 +70,7 @@ public class menuActivity extends AppCompatActivity {
         configuracionActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        guardarPreferencia();
+        calcularTiempo();
         menus_left.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,12 +78,49 @@ public class menuActivity extends AppCompatActivity {
             }
         });
     }
+    public void calcularTiempo(){
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        int tiempo = Integer.parseInt(prefs.getString("Tiempo","-1"));
+        tiempo = tiempo /1000;
+        Log.e("Timepo de la aplicacion",tiempo+"");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+    public void contador(){
+        SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        cont = prefs.getInt("Contador",-1);
+        cont = cont+1;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("Contador", cont);
+        editor.commit();
+        Log.e("contador",cont+"");
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        /*SharedPreferences prefs =
+                getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        int tiempo = Integer.parseInt(prefs.getString("Tiempo","-1"));
+        tiempo = tiempo /1000;
+        Log.e("Timepo de la aplicacion",tiempo+"");*/
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void guardarPreferencia(){
         SharedPreferences prefs =
                 getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("rutAlumno", Rut);
-        editor.commit();
+        Rut = prefs.getString("rutAlumno","-1");
+        id = prefs.getInt("idCurso",-1);
     }
 
     private void cargaCategoria(int position){
@@ -161,6 +196,67 @@ public class menuActivity extends AppCompatActivity {
         actividad();
         respuesta();
        cambioEstadoAct();
+       contador();
+        ingesarRespuesta();
+    }
+    public void ingesarRespuesta(){
+        if (cont>1){
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new FragmentoTareas()).commit();
+            CrudActividad crudActividad = new CrudActividad(this);
+            SharedPreferences prefs = getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+            int rut = Integer.parseInt(prefs.getString("rutAlumno","-1"));
+            int tiempo = Integer.parseInt(prefs.getString("Tiempo","-1"));
+            int idActividad = Integer.parseInt(prefs.getString("idActividad","-1"));
+            int idpictograma = Integer.parseInt(prefs.getString("idPictograma","-1"));
+            Actividad a = crudActividad.find(idActividad);
+            String estado="";
+            if (idpictograma == a.getPosRespuesta()){
+                    estado="Correcto";
+                    insertRespuesta(rut,tiempo,estado,idActividad);
+            }else{
+                estado="Incorrecto";
+                insertRespuesta(rut,tiempo,estado,idActividad);
+            }
+        }
+    }
+    public void insertRespuesta(int rut,int tiempo,String estado,int idActividad){
+        String url = "http://"+ip+"/index.php/api/insertRespuesta";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        CrudRespuesta crudRespuesta = new CrudRespuesta(this);
+        int idRespuestaActividad= crudRespuesta.ultimoID(rut);
+        params.put("Tiempo", tiempo);
+        params.put("Estado",estado);
+        params.put("RutAlumno",rut);
+        params.put("idActividad",idActividad);
+        Respuesta r = new Respuesta();
+        idRespuestaActividad = idRespuestaActividad+1;
+        r.idActividadAlumno = idRespuestaActividad;
+        r.idActividad= idActividad;
+        r.Tiempo = tiempo;
+        r.Estado = estado;
+        r.RutAlumno = rut;
+        if (crudRespuesta.insert(r)){
+            Log.e("Respuesta ingresada", "ok");
+        }else {
+            Log.e("Respuesta ingresada", "Error en los campos");
+        }
+
+        client.get(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (statusCode==200){
+                    String respuesta = new String(responseBody);
+                    Log.e("conexion insert", respuesta);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("conexion insert", statusCode+"");
+            }
+        });
     }
     public void respuesta(){
         String url = "http://"+ip+"/index.php/api/respuestas";

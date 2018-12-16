@@ -17,4 +17,44 @@ public class Respuesta {
         RutAlumno = rutAlumno;
         this.idActividad = idActividad;
     }
+
+    public int getIdActividadAlumno() {
+        return idActividadAlumno;
+    }
+
+    public void setIdActividadAlumno(int idActividadAlumno) {
+        this.idActividadAlumno = idActividadAlumno;
+    }
+
+    public int getTiempo() {
+        return Tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        Tiempo = tiempo;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String estado) {
+        Estado = estado;
+    }
+
+    public int getRutAlumno() {
+        return RutAlumno;
+    }
+
+    public void setRutAlumno(int rutAlumno) {
+        RutAlumno = rutAlumno;
+    }
+
+    public int getIdActividad() {
+        return idActividad;
+    }
+
+    public void setIdActividad(int idActividad) {
+        this.idActividad = idActividad;
+    }
 }

@@ -34,7 +34,7 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Intent intent = getIntent();
-        id = Integer.parseInt(intent.getStringExtra("ID"));
+
         guardarPreferencia();
         txtUsuario1 = findViewById(R.id.txtUsuario);
         txtclave1 = findViewById(R.id.txtClave);
@@ -43,14 +43,13 @@ public class loginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        guardarPreferencia();
         alumnos();
     }
     private void guardarPreferencia(){
         SharedPreferences prefs =
                 getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("idCurso", id);
-        editor.commit();
+        id = prefs.getInt("idCurso",-1);
     }
     public void alumnos(){
         String url = "http://"+ip+"/index.php/api/cursoAlu";
@@ -79,7 +78,7 @@ public class loginActivity extends AppCompatActivity {
             JSONArray json = new JSONArray(respuesta);
             CrudAlumno crudAlumno = new CrudAlumno(this);
             List<Alumno> ListaSize = crudAlumno.AlumnoList();
-            if (ListaSize.size()<= json.length()){
+            if (ListaSize.size()< json.length()){
                 for (int i=0; i<json.length();i++){
                     Alumno a = new Alumno();
                     //eliminar los repetidos

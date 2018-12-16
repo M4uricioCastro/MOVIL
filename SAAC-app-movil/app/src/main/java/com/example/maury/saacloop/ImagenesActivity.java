@@ -3,6 +3,7 @@ package com.example.maury.saacloop;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class ImagenesActivity extends AppCompatActivity {
+    int cont;
     private String ip="170.239.85.176";
     private ListView lv;
     private int id;
@@ -52,7 +54,12 @@ public class ImagenesActivity extends AppCompatActivity {
         tvRespuesta = findViewById(R.id.tvrespuesta);
         crudPictograma = new CrudPictograma(this);
         cargaImagenes();
-
+        cont =0;
+        SharedPreferences prefs = getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("Contador", cont);
+        cont = prefs.getInt("Contador",-1);
+        editor.commit();
         Intent intent = getIntent();
         id = Integer.parseInt(intent.getStringExtra("cod"));
         id++;

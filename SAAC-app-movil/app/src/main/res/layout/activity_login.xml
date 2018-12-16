@@ -8,7 +8,7 @@
     tools:context=".loginActivity">
     <ImageView
         android:layout_width="200dp"
-        android:layout_height="285dp"
+        android:layout_height="250dp"
         android:layout_gravity="center"
         android:src="@drawable/images" />
     <EditText

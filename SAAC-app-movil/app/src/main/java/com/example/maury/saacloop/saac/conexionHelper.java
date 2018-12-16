@@ -60,12 +60,12 @@ public class conexionHelper extends SQLiteOpenHelper {
         String script="";
         script+="create table "+TABLE+"("+ID_CURSO+" integer primary key,"+NOMBRE+" text);";
         db.execSQL(script);
-        db.execSQL("insert into "+TABLE+" values(666, 'SaacPrueba');");
+        //db.execSQL("insert into "+TABLE+" values(666, 'SaacPrueba');");
         //alumno
         String scriptAlumno="";
         scriptAlumno+="create table "+TABLE_ALUMNO+"("+RUT_ALUMNO+" integer primary key,"+NOMBRE_ALUMNO+" text,"+ID_CURSO_ALUMNO+" integer);";
         db.execSQL(scriptAlumno);
-        db.execSQL("insert into "+TABLE_ALUMNO+" values(6666666, 'SAACalumno',666);");
+        //db.execSQL("insert into "+TABLE_ALUMNO+" values(6666666, 'SAACalumno',666);");
         //categoria
         String scriptCategoria="";
         scriptCategoria+="create table "+TABLE_CATEGORIA+"("+ID_CATEGORIA+" integer primary key,"+NOMBRE_CATEGORIA+" text);";

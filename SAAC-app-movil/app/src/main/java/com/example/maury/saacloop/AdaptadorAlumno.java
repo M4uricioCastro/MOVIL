@@ -1,7 +1,9 @@
 package com.example.maury.saacloop;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -63,6 +65,11 @@ public class AdaptadorAlumno extends RecyclerView.Adapter<AdaptadorAlumno.alumno
                     Intent i = new Intent(activity, menuActivity.class);
                     i.putExtra("ID",id);
                     i.putExtra("RUT",rut);
+                    SharedPreferences prefs =
+                            activity.getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("rutAlumno", rut);
+                    editor.commit();
                     activity.startActivity(i);
                 }
             });

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.maury.saacloop.saac.Actividad;
-import com.example.maury.saacloop.saac.AdaptadorTareasAlternativas;
 import com.example.maury.saacloop.saac.CrudActividad;
 import com.example.maury.saacloop.saac.CrudPictograma;
 import com.example.maury.saacloop.saac.Pictograma;
@@ -25,6 +24,7 @@ public class TareasActivity extends AppCompatActivity {
     private String idShar;
     private String rutAlumno;
     private String picOracion;
+    private int posRes;
     private List<Pictograma> picto;
     private List<Actividad> actividadList;
     private List<Pictograma> pictoAlternativa;
@@ -32,6 +32,7 @@ public class TareasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_tareas);
         tvoracion = findViewById(R.id.item_oracion_actividad);
         recyclerPreguntas = findViewById(R.id.recyclerPregunta);
@@ -59,10 +60,18 @@ public class TareasActivity extends AppCompatActivity {
     public void cargaOracion(){
         CrudActividad crudActividad = new CrudActividad(this);
         actividadList = crudActividad.actividadListID(Integer.parseInt(idShar));
+        SharedPreferences prefs = getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+
+        int idActividad ;
         for (int i=0;i<actividadList.size();i++){
             tvoracion.setText(actividadList.get(i).Oracion);
             picOracion = actividadList.get(i).PicsVista;
+            posRes = actividadList.get(i).PosRespuesta;
+            editor.putString("idActividadSale", actividadList.get(i).idActividad+"");
         }
+        editor.commit();
     }
     public void cargaPicVista(){
         picOracion= picOracion.replace(",","");
@@ -88,6 +97,8 @@ public class TareasActivity extends AppCompatActivity {
     }
     public void cargaPicRespuesta(){
         CrudPictograma crudPictograma = new CrudPictograma(this);
+        CrudActividad crudActividad = new CrudActividad(this);
+        int e=0;
         for (int i=0;i<actividadList.size();i++){
             Pictograma p = crudPictograma.find(actividadList.get(i).idPic1);
             pictoAlternativa.add(p);
@@ -97,7 +108,22 @@ public class TareasActivity extends AppCompatActivity {
             pictoAlternativa.add(s);
             Pictograma d = crudPictograma.find(actividadList.get(i).idPic4);
             pictoAlternativa.add(d);
+            switch (posRes){
+                case 1:
+                    e = p.idPictograma;
+                    break;
+                case 2:
+                    e = a.idPictograma;
+                    break;
+                case 3:
+                    e= s.idPictograma;
+                    break;
+                case 4:
+                    e = d.idPictograma;
+                    break;
             }
+            }
+        crudActividad.updatePoss(e,Integer.parseInt(idShar));
 
     }
     public void cargaRecyclerAlternativas(){

@@ -1,7 +1,9 @@
 package com.example.maury.saacloop;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -50,6 +52,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
     public class cursoHolder extends RecyclerView.ViewHolder{
         private TextView txtcircle, txtnombre, txtIdcurso;
         private String id;
+        int cont =0;
         public cursoHolder(@NonNull View itemView) {
             super(itemView);
             txtcircle = itemView.findViewById(R.id.item_circleCurso);
@@ -60,6 +63,12 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.cursoHolder>{
                 public void onClick(View v) {
                     Intent i = new Intent(activity, loginActivity.class);
                     i.putExtra("ID",id);
+                    SharedPreferences prefs =
+                            activity.getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("idCurso", Integer.parseInt(id));
+                    editor.putInt("Contador", cont);
+                    editor.commit();
                     activity.startActivity(i);
                 }
             });

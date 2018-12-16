@@ -34,13 +34,7 @@ public class MainActivity extends AppCompatActivity {
         recycler = findViewById(R.id.recycler);
         txtnombre = findViewById(R.id.item_nombre);
         txtidCurso = findViewById(R.id.item_idCurso);
-        //mascotas();
-        CrudCurso crudCurso = new CrudCurso(this);
-        Curso c = crudCurso.find(666);
-        Log.e("info","-------------------------");
-        Log.e("info",c.Nombre);
-        Log.e("info","--------------------------");
-    }
+        }
 
 
     @Override
@@ -146,9 +140,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void eventoInsertar(View view) {
-
-        Intent i = new Intent(this,insertarActivity.class);
-        startActivity(i);
-    }
 }
