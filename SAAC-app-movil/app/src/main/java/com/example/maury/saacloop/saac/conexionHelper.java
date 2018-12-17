@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class conexionHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="data";
     private static final int VERSION=1;
+    private Context con;
 
     // tabla curso
     public static final String TABLE="curso";
@@ -54,9 +55,11 @@ public class conexionHelper extends SQLiteOpenHelper {
 
     public conexionHelper (Context context){
         super(context,DATABASE_NAME, null,VERSION);
+        this.con =context;
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String script="";
         script+="create table "+TABLE+"("+ID_CURSO+" integer primary key,"+NOMBRE+" text);";
         db.execSQL(script);
@@ -89,6 +92,7 @@ public class conexionHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        con.deleteDatabase("data");
         onCreate(db);
     }
 }

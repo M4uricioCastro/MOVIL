@@ -114,6 +114,7 @@ public class menuActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     private void guardarPreferencia(){
@@ -210,6 +211,7 @@ public class menuActivity extends AppCompatActivity {
             int idActividad = Integer.parseInt(prefs.getString("idActividad","-1"));
             int idpictograma = Integer.parseInt(prefs.getString("idPictograma","-1"));
             Actividad a = crudActividad.find(idActividad);
+            tiempo = tiempo/1000;
             String estado="";
             if (idpictograma == a.getPosRespuesta()){
                     estado="Correcto";
@@ -254,7 +256,7 @@ public class menuActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e("conexion insert", statusCode+"");
+                Log.e("conexion insert", statusCode+": No se registro");
             }
         });
     }
@@ -467,8 +469,8 @@ public class menuActivity extends AppCompatActivity {
                     Respuesta r = new Respuesta();
                     r.idActividad = respuestaList.get(j).idActividad;
                     if (a.idActividad==r.idActividad){
-                        crudActividad.updateEstado("Intento "+j+1,a.idActividad);
-                        Log.e("Estado","intento"+0+(j+1));
+                        crudActividad.updateEstado("Intento "+j,a.idActividad);
+                        Log.e("Estado","intento "+j);
                     }
                 }
             }
